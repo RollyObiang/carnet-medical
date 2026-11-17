@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: carnet_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: carnet
+      POSTGRES_PASSWORD: carnet_dev_password
+      POSTGRES_DB: carnet_medical
+    ports:
+      - "5432:5432"
+    volumes:
+      - carnet_pgdata:/var/lib/postgresql/data
+
+volumes:
+  carnet_pgdata:
