@@ -4,6 +4,9 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Documents from './pages/Documents.jsx';
+import Profile from './pages/Profile.jsx';
+import Emergency from './pages/Emergency.jsx';
+import PublicEmergency from './pages/PublicEmergency.jsx';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -18,6 +21,9 @@ export default function App() {
       <Route path="/connexion" element={<Login />} />
       <Route path="/inscription" element={<Register />} />
       <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
+      <Route path="/profil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/urgence" element={<ProtectedRoute><Emergency /></ProtectedRoute>} />
+      <Route path="/urgence/:token" element={<PublicEmergency />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

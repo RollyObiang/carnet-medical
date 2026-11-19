@@ -40,3 +40,14 @@ CREATE TABLE IF NOT EXISTS documents (
 
 CREATE INDEX IF NOT EXISTS documents_patient_idx
   ON documents (patient_id, document_date DESC);
+
+  CREATE TABLE IF NOT EXISTS emergency_info (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  patient_id          UUID NOT NULL UNIQUE REFERENCES patients(id) ON DELETE CASCADE,
+  allergies           TEXT[] NOT NULL DEFAULT '{}',
+  current_medications TEXT[] NOT NULL DEFAULT '{}',
+  vital_notes         TEXT,
+  is_public           BOOLEAN NOT NULL DEFAULT false,
+  public_token        TEXT UNIQUE,
+  updated_at          TIMESTAMPTZ NOT NULL DEFAULT now()
+);

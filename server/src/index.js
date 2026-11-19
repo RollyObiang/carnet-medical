@@ -7,6 +7,9 @@ import { requireAuth } from './middleware/requireAuth.js';
 import authRoutes from './routes/auth.js';
 import patientRoutes from './routes/patients.js';
 import documentRoutes from './routes/documents.js';
+import rateLimit from 'express-rate-limit';
+import emergencyRoutes from './routes/emergency.js';
+import publicRoutes from './routes/public.js';
 
 const app = express();
 app.use(express.json());
@@ -25,6 +28,16 @@ app.get('/api/health', async (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/patients', requireAuth, patientRoutes);
 app.use('/api/documents', requireAuth, documentRoutes);
+app.use('/api/emergency', requireAuth, emergencyRoutes);
+
+// Route publique : limitée à 60 requêtes / 15 min par adresse IP, contre le balayage de jetons
+const publicLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api/public', publicLimiter, publicRoutes);
 
 // Gestion des erreurs : toujours en JSON, sans détails techniques pour le client
 app.use((err, req, res, next) => {

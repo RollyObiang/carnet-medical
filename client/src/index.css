@@ -50,3 +50,16 @@ button.danger { background: #fff0f0; color: #c92a2a; padding: 0.5rem 0.9rem; }
   .row { flex-direction: column; }
   .doc-list li { flex-direction: column; align-items: flex-start; }
 }
+
+textarea {
+  padding: 0.6rem; border: 1px solid #c5d0d8; border-radius: 8px;
+  font-size: 1rem; font-family: inherit; resize: vertical;
+}
+.checkbox { flex-direction: row; align-items: flex-start; gap: 0.6rem; }
+.checkbox input { width: auto; padding: 0; margin-top: 0.25rem; }
+.qr-box {
+  display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+  margin-top: 1.5rem; padding: 1rem; border: 1px solid #dde5ea; border-radius: 10px;
+}
+.alert-box { background: #fff5f5; border-left: 4px solid #c92a2a; padding: 0.8rem 1rem; border-radius: 6px; }
+.blood { font-size: 2rem; font-weight: 700; color: #c92a2a; margin: 0; }
