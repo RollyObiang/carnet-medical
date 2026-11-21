@@ -476,3 +476,71 @@ input[readonly] { background: var(--paper); color: var(--ink-soft); }
   .switch input,
   .switch input::before { transition: none; }
 }
+
+/* ---------- Connexion et inscription ---------- */
+.auth { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); min-height: 100vh; }
+
+.auth-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: 2.5rem clamp(1.5rem, 4vw, 3.5rem);
+  background: var(--green-dark);
+  color: #fff;
+}
+.brand-light { margin: 0; color: #fff; border-left-color: rgba(255, 255, 255, 0.9); }
+
+.pitch-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+}
+.auth-pitch > p:not(.pitch-title) { color: rgba(255, 255, 255, 0.85); max-width: 42ch; }
+
+.preview { margin-top: 2rem; max-width: 380px; background: var(--surface); color: var(--ink); border-radius: 14px; overflow: hidden; }
+.preview-row {
+  display: grid;
+  grid-template-columns: 6px 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.preview-row:last-child { border-bottom: 0; }
+.preview-row strong { display: block; }
+.preview-row small { color: var(--ink-soft); font-size: 0.9rem; }
+
+.auth-main { display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem; }
+.auth-box { width: 100%; max-width: 400px; }
+.auth-box h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+.auth-box > .muted { margin-bottom: 1.75rem; }
+.auth-box form button[type='submit'] { width: 100%; margin-top: 0.25rem; }
+.auth-footer { margin: 1.5rem 0 0; color: var(--ink-soft); }
+
+/* Champ mot de passe avec bouton Afficher / Masquer */
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field > label { font-size: 0.95rem; font-weight: 700; }
+.password-wrap { position: relative; }
+.password-wrap input { padding-right: 6rem; }
+button.reveal {
+  position: absolute;
+  right: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  min-height: 34px;
+  padding: 0.2rem 0.7rem;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+}
+button.reveal:hover { background: var(--green-tint); color: var(--green-dark); }
+
+@media (max-width: 860px) {
+  .auth { grid-template-columns: 1fr; min-height: 0; }
+  .auth-side { padding: 1.25rem 1.5rem; }
+  .auth-pitch { display: none; }
+}
