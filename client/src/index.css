@@ -273,3 +273,91 @@ button.quiet:hover { background: var(--paper); color: var(--ink); }
   .row { flex-direction: column; }
   .doc-list li { flex-direction: column; align-items: flex-start; }
 }
+
+/* ---------- Bandeau de sensibilisation ---------- */
+.campaign {
+  margin-bottom: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.campaign-slide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  min-height: 220px;
+  animation: campaign-in 0.45s ease-out;
+}
+
+.campaign-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.75rem 2rem;
+}
+.campaign-copy h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin: 0; }
+.campaign-copy p { color: var(--ink-soft); max-width: 48ch; margin: 0; font-size: 1.05rem; }
+
+.campaign-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tint);
+  color: var(--accent);
+}
+.campaign-art svg { width: min(100%, 220px); height: auto; }
+.campaign-art img { width: 100%; height: 100%; object-fit: cover; }
+
+.campaign-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 1rem 0.25rem 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+.dots { display: flex; }
+
+button.dot,
+button.dot:hover {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+}
+button.dot::before {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.25;
+}
+button.dot[aria-current='true']::before { opacity: 1; }
+
+button.ghost { background: transparent; color: var(--ink-soft); border-color: var(--rule); min-height: 40px; padding: 0.3rem 0.9rem; }
+button.ghost:hover { background: var(--paper); color: var(--ink); }
+
+.campaign-note { margin: 0; padding: 0 1.25rem 0.75rem; font-size: 0.85rem; color: var(--ink-soft); }
+
+@keyframes campaign-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .campaign-slide { animation: none; }
+}
+
+@media (max-width: 760px) {
+  .campaign-slide { grid-template-columns: 1fr; }
+  .campaign-art { order: -1; height: 160px; }
+  .campaign-copy { padding: 1.25rem; }
+}
