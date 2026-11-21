@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { useAuth } from '../AuthContext.jsx';
 
@@ -69,77 +68,109 @@ export default function Profile() {
   const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <main className="card">
-      <p><Link to="/">← Retour</Link></p>
-      <h1>Mon profil</h1>
+    <>
+      <header className="page-head">
+        <h1>Profil</h1>
+        <p>Ces informations alimentent votre fiche d’urgence et simplifient vos échanges avec les soignants.</p>
+      </header>
+
       {loading && <p>Chargement...</p>}
 
       {!loading && (
-        <form onSubmit={handleSubmit}>
-          <p className="muted">Compte : {email}</p>
+        <form className="panel form-panel" onSubmit={handleSubmit}>
+          <section className="form-section">
+            <h2>Identité</h2>
+            <div className="row">
+              <label>
+                Prénom
+                <input value={form.first_name} onChange={update('first_name')} required />
+              </label>
+              <label>
+                Nom
+                <input value={form.last_name} onChange={update('last_name')} required />
+              </label>
+            </div>
+            <div className="row">
+              <label>
+                Date de naissance
+                <input type="date" max={today} value={form.birth_date} onChange={update('birth_date')} />
+              </label>
+              <label>
+                Sexe
+                <select value={form.sex} onChange={update('sex')}>
+                  <option value="">Non renseigné</option>
+                  {Object.entries(SEX_LABELS).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </section>
 
-          <div className="row">
-            <label>
-              Prénom
-              <input value={form.first_name} onChange={update('first_name')} required />
-            </label>
-            <label>
-              Nom
-              <input value={form.last_name} onChange={update('last_name')} required />
-            </label>
-          </div>
-
-          <div className="row">
-            <label>
-              Date de naissance
-              <input type="date" max={today} value={form.birth_date} onChange={update('birth_date')} />
-            </label>
-            <label>
-              Sexe
-              <select value={form.sex} onChange={update('sex')}>
-                <option value="">Non renseigné</option>
-                {Object.entries(SEX_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>{label}</option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div className="row">
+          <section className="form-section">
+            <h2>Santé</h2>
             <label>
               Groupe sanguin
+              <span className="hint">Il apparaît sur votre fiche d’urgence.</span>
               <select value={form.blood_group} onChange={update('blood_group')}>
                 <option value="">Non renseigné</option>
                 {BLOOD_GROUPS.map((g) => (
-                  <option key={g} value={g}>{g}</option>
+                  <option key={g} value={g}>
+                    {g}
+                  </option>
                 ))}
               </select>
             </label>
-            <label>
-              Téléphone
-              <input type="tel" maxLength={30} value={form.phone} onChange={update('phone')} />
-            </label>
-          </div>
+          </section>
 
-          <h2>Contact d'urgence</h2>
-          <div className="row">
-            <label>
-              Nom
-              <input maxLength={100} value={form.emergency_contact_name} onChange={update('emergency_contact_name')} />
-            </label>
-            <label>
-              Téléphone
-              <input type="tel" maxLength={30} value={form.emergency_contact_phone} onChange={update('emergency_contact_phone')} />
-            </label>
-          </div>
+          <section className="form-section">
+            <h2>Coordonnées</h2>
+            <div className="row">
+              <label>
+                Téléphone
+                <input type="tel" maxLength={30} value={form.phone} onChange={update('phone')} />
+              </label>
+              <label>
+                E-mail du compte
+                <input value={email} readOnly />
+              </label>
+            </div>
+          </section>
 
-          {error && <p className="error">{error}</p>}
-          {saved && <p style={{ color: '#2b8a3e', margin: 0 }}>Profil enregistré.</p>}
-          <button type="submit" disabled={saving}>
-            {saving ? 'Enregistrement...' : 'Enregistrer'}
-          </button>
+          <section className="form-section">
+            <h2>Contact d’urgence</h2>
+            <p>La personne à prévenir en cas de problème.</p>
+            <div className="row">
+              <label>
+                Nom
+                <input maxLength={100} value={form.emergency_contact_name} onChange={update('emergency_contact_name')} />
+              </label>
+              <label>
+                Téléphone
+                <input type="tel" maxLength={30} value={form.emergency_contact_phone} onChange={update('emergency_contact_phone')} />
+              </label>
+            </div>
+          </section>
+
+          <div className="form-footer">
+            <button type="submit" disabled={saving}>
+              {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
+            </button>
+            {saved && (
+              <p className="flash" role="status">
+                Profil enregistré.
+              </p>
+            )}
+            {error && (
+              <p className="error" role="alert">
+                {error}
+              </p>
+            )}
+          </div>
         </form>
       )}
-    </main>
+    </>
   );
 }
