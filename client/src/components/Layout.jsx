@@ -7,6 +7,7 @@ const LINKS = [
   { to: '/annuaire', label: 'Annuaire' },
   { to: '/urgence', label: 'Fiche d’urgence' },
   { to: '/profil', label: 'Profil' },
+  { to: '/rendez-vous', label: 'Rendez-vous' },
 ];
 
 export default function Layout() {

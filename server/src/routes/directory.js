@@ -92,4 +92,21 @@ router.get('/establishments/:id', async (req, res) => {
   res.json({ establishment: rows[0], practitioners: practitioners.rows });
 });
 
+router.get('/practitioners/:id', async (req, res) => {
+  const id = idSchema.safeParse(req.params.id);
+  if (!id.success) return res.status(400).json({ error: 'Identifiant invalide' });
+
+  const { rows } = await pool.query(
+    `SELECT p.id, p.first_name, p.last_name, s.name AS specialty,
+            e.id AS establishment_id, e.name AS establishment_name, e.city, e.address, e.phone
+     FROM practitioners p
+     JOIN specialties s ON s.id = p.specialty_id
+     JOIN establishments e ON e.id = p.establishment_id
+     WHERE p.id = $1 AND p.is_active = true AND e.is_active = true`,
+    [id.data]
+  );
+  if (!rows[0]) return res.status(404).json({ error: 'Médecin introuvable' });
+  res.json({ practitioner: rows[0] });
+});
+
 export default router;

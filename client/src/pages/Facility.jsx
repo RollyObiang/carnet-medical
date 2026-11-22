@@ -65,15 +65,18 @@ export default function Facility() {
           <ul className="doc-rows">
             {practitioners.map((p) => (
               <li key={p.id} className="person-row">
-                <div>
-                  <div className="doc-title">
-                    Dr {p.first_name} {p.last_name}
-                  </div>
-                  <div className="doc-meta">
-                    <span>{p.specialty}</span>
-                  </div>
-                </div>
-              </li>
+  <div>
+    <div className="doc-title">
+      Dr {p.first_name} {p.last_name}
+    </div>
+    <div className="doc-meta">
+      <span>{p.specialty}</span>
+    </div>
+  </div>
+  <Link className="button-link" to={`/rendez-vous/nouveau/${p.id}`}>
+    Prendre rendez-vous
+  </Link>
+</li>
             ))}
           </ul>
         )}

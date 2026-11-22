@@ -6,6 +6,7 @@
   "scripts": {
     "db:init": "node src/initDb.js",
     "db:seed": "node src/seedDirectory.js",
+    "db:seed:horaires": "node src/seedAvailabilities.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

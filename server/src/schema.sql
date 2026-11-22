@@ -96,3 +96,37 @@ CREATE TABLE IF NOT EXISTS practitioners (
 
 CREATE INDEX IF NOT EXISTS practitioners_establishment_idx ON practitioners (establishment_id);
 CREATE INDEX IF NOT EXISTS establishments_city_idx ON establishments (city);
+
+CREATE TABLE IF NOT EXISTS availabilities (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  practitioner_id UUID NOT NULL REFERENCES practitioners(id) ON DELETE CASCADE,
+  weekday         SMALLINT NOT NULL CHECK (weekday BETWEEN 1 AND 7), -- 1 = lundi, 7 = dimanche
+  start_time      TIME NOT NULL,
+  end_time        TIME NOT NULL,
+  slot_minutes    SMALLINT NOT NULL DEFAULT 30 CHECK (slot_minutes BETWEEN 10 AND 120),
+  CHECK (end_time > start_time)
+);
+
+CREATE INDEX IF NOT EXISTS availabilities_practitioner_idx ON availabilities (practitioner_id, weekday);
+
+CREATE TABLE IF NOT EXISTS appointments (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  patient_id      UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
+  practitioner_id UUID NOT NULL REFERENCES practitioners(id),
+  starts_at       TIMESTAMPTZ NOT NULL,
+  ends_at         TIMESTAMPTZ NOT NULL,
+  status          TEXT NOT NULL DEFAULT 'confirmed' CHECK (status IN ('confirmed', 'cancelled')),
+  reason          TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  cancelled_at    TIMESTAMPTZ
+);
+
+-- Un médecin ne peut avoir qu'un rendez-vous confirmé par créneau
+CREATE UNIQUE INDEX IF NOT EXISTS appointments_practitioner_slot_unique
+  ON appointments (practitioner_id, starts_at) WHERE status = 'confirmed';
+
+-- Un patient ne peut pas être à deux endroits à la même heure
+CREATE UNIQUE INDEX IF NOT EXISTS appointments_patient_slot_unique
+  ON appointments (patient_id, starts_at) WHERE status = 'confirmed';
+
+CREATE INDEX IF NOT EXISTS appointments_patient_idx ON appointments (patient_id, starts_at DESC);
