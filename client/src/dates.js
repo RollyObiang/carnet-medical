@@ -15,3 +15,13 @@ export function dayParts(key) {
   const f = (opts) => new Intl.DateTimeFormat('fr-FR', { timeZone: 'UTC', ...opts }).format(d);
   return { weekday: f({ weekday: 'short' }), day: f({ day: 'numeric' }), month: f({ month: 'short' }) };
 }
+
+// "Aujourd'hui", "Demain" ou "Dans N jours", selon le jour local de la structure
+export function relativeDay(iso, tz) {
+  const target = dayKey(iso, tz);
+  const today = dayKey(new Date().toISOString(), tz);
+  const diff = Math.round((Date.parse(`${target}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) / 86400000);
+  if (diff <= 0) return 'Aujourd’hui';
+  if (diff === 1) return 'Demain';
+  return `Dans ${diff} jours`;
+}

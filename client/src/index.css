@@ -649,3 +649,28 @@ button.slot[aria-pressed='true'] { background: var(--green); border-color: var(-
   .appt-row .actions { grid-column: 2; }
   .person-row { flex-direction: column; align-items: flex-start; }
 }
+
+/* ---------- Prochain rendez-vous (accueil) ---------- */
+.next-appt {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: var(--green-tint);
+  border-radius: 10px;
+}
+.next-appt h2 { margin: 0 0 0.25rem; font-size: 1.3rem; }
+.next-appt p { margin: 0; }
+.next-when { font-weight: 700; color: var(--green-dark); }
+.next-appt .muted { color: var(--ink); opacity: 0.75; }
+
+.next-appt.empty-appt { grid-template-columns: minmax(0, 1fr) auto; background: var(--surface); border: 1px solid var(--rule); }
+.next-appt.empty-appt .muted { color: var(--ink-soft); opacity: 1; }
+
+@media (max-width: 760px) {
+  .next-appt,
+  .next-appt.empty-appt { grid-template-columns: 1fr; }
+  .next-appt .date-leaf { width: 64px; }
+}
