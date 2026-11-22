@@ -62,3 +62,37 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 );
 
 CREATE INDEX IF NOT EXISTS refresh_tokens_user_idx ON refresh_tokens (user_id);
+
+CREATE TABLE IF NOT EXISTS establishments (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name          TEXT NOT NULL,
+  type          TEXT NOT NULL
+                CHECK (type IN ('hopital','clinique','centre_sante','cabinet','pharmacie','laboratoire')),
+  city          TEXT NOT NULL,
+  address       TEXT,
+  phone         TEXT,
+  opening_hours TEXT,
+  latitude      DOUBLE PRECISION,
+  longitude     DOUBLE PRECISION,
+  is_active     BOOLEAN NOT NULL DEFAULT true,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS specialties (
+  id   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS practitioners (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  establishment_id UUID NOT NULL REFERENCES establishments(id) ON DELETE CASCADE,
+  specialty_id     UUID NOT NULL REFERENCES specialties(id),
+  first_name       TEXT NOT NULL,
+  last_name        TEXT NOT NULL,
+  is_active        BOOLEAN NOT NULL DEFAULT true,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS practitioners_establishment_idx ON practitioners (establishment_id);
+CREATE INDEX IF NOT EXISTS establishments_city_idx ON establishments (city);

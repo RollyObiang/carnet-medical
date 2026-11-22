@@ -10,6 +10,7 @@ import documentRoutes from './routes/documents.js';
 import rateLimit from 'express-rate-limit';
 import emergencyRoutes from './routes/emergency.js';
 import publicRoutes from './routes/public.js';
+import directoryRoutes from './routes/directory.js';
 
 const app = express();
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/patients', requireAuth, patientRoutes);
 app.use('/api/documents', requireAuth, documentRoutes);
 app.use('/api/emergency', requireAuth, emergencyRoutes);
+app.use('/api/directory', requireAuth, directoryRoutes);
 
 // Route publique : limitée à 60 requêtes / 15 min par adresse IP, contre le balayage de jetons
 const publicLimiter = rateLimit({

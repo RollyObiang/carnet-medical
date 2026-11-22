@@ -544,3 +544,45 @@ button.reveal:hover { background: var(--green-tint); color: var(--green-dark); }
   .auth-side { padding: 1.25rem 1.5rem; }
   .auth-pitch { display: none; }
 }
+
+/* ---------- Annuaire ---------- */
+.notice.danger { background: var(--alert-tint); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+button.chip {
+  min-height: 40px;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--field);
+  font-weight: 400;
+}
+button.chip:hover { background: var(--green-tint); color: var(--green-dark); }
+button.chip[aria-pressed='true'] { background: var(--green); border-color: var(--green); color: #fff; font-weight: 700; }
+
+.place-row {
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+.place-row:last-child { border-bottom: 0; }
+.place-name { font-weight: 700; font-size: 1.05rem; }
+.place-lines { display: flex; flex-direction: column; gap: 0.1rem; margin-top: 0.4rem; color: var(--ink-soft); font-size: 0.95rem; }
+
+.person-row { padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--rule); }
+.person-row:last-child { border-bottom: 0; }
+
+.info-list { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 0.7rem 1rem; margin: 0; padding: 1.25rem; }
+.info-list dt { color: var(--ink-soft); }
+.info-list dd { margin: 0; font-weight: 700; }
+
+@media (max-width: 760px) {
+  .place-row { grid-template-columns: 6px 1fr; }
+  .place-row .button-link { grid-column: 2; justify-self: start; }
+  .info-list { grid-template-columns: 1fr; gap: 0.15rem; }
+  .info-list dd { margin-bottom: 0.6rem; }
+}

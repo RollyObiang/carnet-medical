@@ -8,6 +8,8 @@ import Documents from './pages/Documents.jsx';
 import Profile from './pages/Profile.jsx';
 import Emergency from './pages/Emergency.jsx';
 import PublicEmergency from './pages/PublicEmergency.jsx';
+import Directory from './pages/Directory.jsx';
+import Facility from './pages/Facility.jsx';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -29,6 +31,8 @@ export default function App() {
         <Route path="/documents" element={<Documents />} />
         <Route path="/profil" element={<Profile />} />
         <Route path="/urgence" element={<Emergency />} />
+        <Route path="/annuaire" element={<Directory />} />
+        <Route path="/annuaire/:id" element={<Facility />} />
       </Route>
 
       <Route path="/connexion" element={<Login />} />
