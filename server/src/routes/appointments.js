@@ -159,7 +159,7 @@ router.get('/', async (req, res) => {
   const upcoming = parsed.data.scope === 'upcoming';
   const { rows } = await pool.query(
     `SELECT ap.id, ap.starts_at, ap.ends_at, ap.status, ap.reason,
-            p.first_name AS practitioner_first_name, p.last_name AS practitioner_last_name,
+            p.title AS practitioner_title, p.first_name AS practitioner_first_name, p.last_name AS practitioner_last_name,
             s.name AS specialty,
             e.id AS establishment_id, e.name AS establishment_name, e.city, e.address, e.phone
      FROM appointments ap

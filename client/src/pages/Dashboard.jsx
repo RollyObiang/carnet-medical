@@ -20,24 +20,25 @@ export default function Dashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
 
- useEffect(() => {
-  Promise.all([
-    api('/patients/me'),
-    api('/emergency/me'),
-    api('/documents?limit=5'),
-    api('/appointments?scope=upcoming').catch(() => null),
-  ])
-    .then(([p, e, d, a]) =>
-      setData({ patient: p.patient, emergency: e.emergency, documents: d.documents, appointments: a })
-    )
-    .catch((err) => setError(err.message));
-}, []);
+  useEffect(() => {
+    Promise.all([
+      api('/patients/me'),
+      api('/emergency/me'),
+      api('/documents?limit=5'),
+      api('/appointments?scope=upcoming').catch(() => null),
+    ])
+      .then(([p, e, d, a]) =>
+        setData({ patient: p.patient, emergency: e.emergency, documents: d.documents, appointments: a })
+      )
+      .catch((err) => setError(err.message));
+  }, []);
+
   if (error) return <p className="error">{error}</p>;
   if (!data) return <p>Chargement...</p>;
 
   const { patient, emergency, documents, appointments } = data;
-const next = appointments?.appointments[0];
-const tz = appointments?.timezone;
+  const next = appointments?.appointments[0];
+  const tz = appointments?.timezone;
   const missing = missingFields(patient);
 
   return (
@@ -52,37 +53,37 @@ const tz = appointments?.timezone;
       </header>
 
       {appointments &&
-  (next ? (
-    <section className="next-appt" aria-label="Prochain rendez-vous">
-      <div className="date-leaf" aria-hidden="true">
-        <span>{monthShort(next.starts_at, tz)}</span>
-        <strong>{dayNumber(next.starts_at, tz)}</strong>
-      </div>
-      <div>
-        <p className="next-when">{relativeDay(next.starts_at, tz)}</p>
-        <h2>
-          {longDate(next.starts_at, tz)} à {timeLabel(next.starts_at, tz)}
-        </h2>
-        <p className="muted">
-          Dr {next.practitioner_first_name} {next.practitioner_last_name}, {next.specialty}. {next.establishment_name},{' '}
-          {next.city}.
-        </p>
-      </div>
-      <Link className="button-link" to="/rendez-vous">
-        Voir mes rendez-vous
-      </Link>
-    </section>
-  ) : (
-    <section className="next-appt empty-appt" aria-label="Prochain rendez-vous">
-      <div>
-        <h2>Aucun rendez-vous à venir</h2>
-        <p className="muted">Trouvez un médecin et réservez un créneau en quelques clics.</p>
-      </div>
-      <Link className="button-link primary" to="/annuaire">
-        Prendre un rendez-vous
-      </Link>
-    </section>
-  ))}
+        (next ? (
+          <section className="next-appt" aria-label="Prochain rendez-vous">
+            <div className="date-leaf" aria-hidden="true">
+              <span>{monthShort(next.starts_at, tz)}</span>
+              <strong>{dayNumber(next.starts_at, tz)}</strong>
+            </div>
+            <div>
+              <p className="next-when">{relativeDay(next.starts_at, tz)}</p>
+              <h2>
+                {longDate(next.starts_at, tz)} à {timeLabel(next.starts_at, tz)}
+              </h2>
+              <p className="muted">
+                {next.practitioner_title} {next.practitioner_first_name} {next.practitioner_last_name}, {next.specialty}.{' '}
+                {next.establishment_name}, {next.city}.
+              </p>
+            </div>
+            <Link className="button-link" to="/rendez-vous">
+              Voir mes rendez-vous
+            </Link>
+          </section>
+        ) : (
+          <section className="next-appt empty-appt" aria-label="Prochain rendez-vous">
+            <div>
+              <h2>Aucun rendez-vous à venir</h2>
+              <p className="muted">Trouvez un médecin et réservez un créneau en quelques clics.</p>
+            </div>
+            <Link className="button-link primary" to="/annuaire">
+              Prendre un rendez-vous
+            </Link>
+          </section>
+        ))}
 
       <HealthBanner />
 

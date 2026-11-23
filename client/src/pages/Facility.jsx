@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api.js';
-import { FACILITY_TYPES, telHref } from '../facilityTypes.js';
+import { FACILITY_TYPES } from '../facilityTypes.js';
+import PhoneLinks from '../components/PhoneLinks.jsx';
 
 export default function Facility() {
   const { id } = useParams();
@@ -46,9 +47,15 @@ export default function Facility() {
           <dt>Adresse</dt>
           <dd>{e.address ?? 'Non renseignée'}</dd>
           <dt>Téléphone</dt>
-          <dd>{e.phone ? <a href={telHref(e.phone)}>{e.phone}</a> : 'Non renseigné'}</dd>
+          <dd>{e.phone ? <PhoneLinks value={e.phone} /> : 'Non renseigné'}</dd>
           <dt>Horaires</dt>
           <dd>{e.opening_hours ?? 'Non renseignés'}</dd>
+          {e.specialties.length > 0 && (
+            <>
+              <dt>Spécialités</dt>
+              <dd>{e.specialties.join(', ')}</dd>
+            </>
+          )}
         </dl>
       </section>
 
@@ -65,22 +72,30 @@ export default function Facility() {
           <ul className="doc-rows">
             {practitioners.map((p) => (
               <li key={p.id} className="person-row">
-  <div>
-    <div className="doc-title">
-      Dr {p.first_name} {p.last_name}
-    </div>
-    <div className="doc-meta">
-      <span>{p.specialty}</span>
-    </div>
-  </div>
-  <Link className="button-link" to={`/rendez-vous/nouveau/${p.id}`}>
-    Prendre rendez-vous
-  </Link>
-</li>
+                <div>
+                  <div className="doc-title">
+                    {p.title} {p.first_name} {p.last_name}
+                  </div>
+                  <div className="doc-meta">
+                    <span>{p.specialty}</span>
+                  </div>
+                </div>
+                {p.bookable ? (
+                  <Link className="button-link" to={`/rendez-vous/nouveau/${p.id}`}>
+                    Prendre rendez-vous
+                  </Link>
+                ) : (
+                  <span className="muted">Pas de réservation en ligne</span>
+                )}
+              </li>
             ))}
           </ul>
         )}
       </section>
+
+      <p className="muted" style={{ marginTop: '1.5rem' }}>
+        Informations indicatives. Vérifiez les horaires et les coordonnées auprès de la structure avant de vous déplacer.
+      </p>
     </>
   );
 }

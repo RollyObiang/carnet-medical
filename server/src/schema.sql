@@ -130,3 +130,13 @@ CREATE UNIQUE INDEX IF NOT EXISTS appointments_patient_slot_unique
   ON appointments (patient_id, starts_at) WHERE status = 'confirmed';
 
 CREATE INDEX IF NOT EXISTS appointments_patient_idx ON appointments (patient_id, starts_at DESC);
+
+ALTER TABLE practitioners
+  ADD COLUMN IF NOT EXISTS title TEXT NOT NULL DEFAULT 'Dr' CHECK (title IN ('Dr', 'Pr'));
+
+-- Spécialités proposées par une structure, indépendamment des médecins nommés
+CREATE TABLE IF NOT EXISTS establishment_specialties (
+  establishment_id UUID NOT NULL REFERENCES establishments(id) ON DELETE CASCADE,
+  specialty_id     UUID NOT NULL REFERENCES specialties(id) ON DELETE CASCADE,
+  PRIMARY KEY (establishment_id, specialty_id)
+);

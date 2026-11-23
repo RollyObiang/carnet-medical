@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api.js';
-import { FACILITY_TYPES, FACILITY_PLURALS, FACILITY_COLORS, telHref } from '../facilityTypes.js';
+import { FACILITY_TYPES, FACILITY_PLURALS, FACILITY_COLORS } from '../facilityTypes.js';
+import PhoneLinks from '../components/PhoneLinks.jsx';
 
 export default function Directory() {
   const [specialties, setSpecialties] = useState([]);
@@ -88,8 +89,8 @@ export default function Directory() {
       <div className="filters">
         <input
           type="search"
-          aria-label="Rechercher par nom ou par ville"
-          placeholder="Rechercher par nom ou par ville"
+          aria-label="Rechercher par nom, ville ou adresse"
+          placeholder="Rechercher par nom, ville ou adresse"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -139,7 +140,7 @@ export default function Directory() {
                     {place.opening_hours && <span>{place.opening_hours}</span>}
                     {place.phone && (
                       <span>
-                        <a href={telHref(place.phone)}>{place.phone}</a>
+                        <PhoneLinks value={place.phone} />
                       </span>
                     )}
                     {place.specialties.length > 0 && <span>{place.specialties.join(', ')}</span>}
@@ -153,6 +154,11 @@ export default function Directory() {
           </ul>
         )}
       </section>
+
+      <p className="muted" style={{ marginTop: '1rem' }}>
+        Informations indicatives, publiées à titre d’orientation. Vérifiez les horaires et les coordonnées auprès de la
+        structure avant de vous déplacer.
+      </p>
     </>
   );
 }

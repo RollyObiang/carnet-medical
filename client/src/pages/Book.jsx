@@ -86,8 +86,8 @@ export default function Book() {
       <header className="page-head">
         <h1>Prendre rendez-vous</h1>
         <p>
-          Dr {practitioner.first_name} {practitioner.last_name}, {practitioner.specialty}. {practitioner.establishment_name},{' '}
-          {practitioner.city}.
+          {practitioner.title} {practitioner.first_name} {practitioner.last_name}, {practitioner.specialty}.{' '}
+          {practitioner.establishment_name}, {practitioner.city}.
         </p>
       </header>
 
@@ -163,7 +163,7 @@ export default function Book() {
                   <br />à {timeLabel(selected, tz)}
                 </p>
                 <p>
-                  Dr {practitioner.first_name} {practitioner.last_name}
+                  {practitioner.title} {practitioner.first_name} {practitioner.last_name}
                   <br />
                   {practitioner.establishment_name}
                   {practitioner.address && (

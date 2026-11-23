@@ -111,7 +111,7 @@ export default function Appointments() {
                     </div>
                     <div className="place-lines">
                       <span>
-                        Dr {a.practitioner_first_name} {a.practitioner_last_name}, {a.specialty}
+                        {a.practitioner_title} {a.practitioner_first_name} {a.practitioner_last_name}, {a.specialty}
                       </span>
                       <span>
                         <Link to={`/annuaire/${a.establishment_id}`}>{a.establishment_name}</Link>
